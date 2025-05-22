@@ -1,0 +1,27 @@
+ public int subCount(int[] arr, int k) {
+    int n = arr.length;
+    Map<Integer, Integer> map = new HashMap<>();
+    int prefixSum = 0;
+    int count = 0;
+
+    // Important: Initialize remainder 0 with count 1
+    map.put(0, 1);  
+
+    for (int i = 0; i < n; i++) {
+        prefixSum += arr[i];
+
+        // Handle negative modulo correctly
+        int rem = prefixSum % k;
+        if (rem < 0) rem += k;
+
+        // If this remainder has been seen before
+        if (map.containsKey(rem)) {
+            count += map.get(rem);
+        }
+
+        // Update map
+        map.put(rem, map.getOrDefault(rem, 0) + 1);
+    }
+
+    return count;
+}
