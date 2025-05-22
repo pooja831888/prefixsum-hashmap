@@ -1,0 +1,31 @@
+class Solution {
+    public int longestSubarray(int[] arr, int k) {
+    int n = arr.length;
+    Map<Integer, Integer> map = new HashMap<>();
+    int prefixSum = 0;
+    int maxLen = 0;
+
+    for (int i = 0; i < n; i++) {
+        prefixSum += arr[i];
+
+        // Case 1: subarray from 0 to i has sum == k
+        if (prefixSum == k) {
+            maxLen = i + 1;
+        }
+
+        // Case 2: subarray from some j+1 to i has sum == k
+        if (map.containsKey(prefixSum - k)) {
+            int prevIndex = map.get(prefixSum - k);
+            maxLen = Math.max(maxLen, i - prevIndex);
+        }
+
+        // Only store the first occurrence of this prefixSum
+        if (!map.containsKey(prefixSum)) {
+            map.put(prefixSum, i);
+        }
+    }
+
+    return maxLen;
+}        
+    
+}
